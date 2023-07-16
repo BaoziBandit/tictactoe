@@ -1,0 +1,23 @@
+.box {
+  display: inline;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  font-size: 4em;
+}
+.box:hover {
+  cursor: pointer;
+}
+
+.column {
+  border-left: 2px #999 solid;
+  border-right: 2px #999 solid;
+}
+
+.p1 {
+  color: #f80;
+}
+.p2 {
+  color: #08f;
+}

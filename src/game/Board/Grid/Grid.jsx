@@ -1,25 +1,12 @@
 import style from './Grid.module.css';
+import GridRow from './GridRow';
 
 const Grid = props => {
-  return <table className={style.grid}>
-    <tbody>
-      <tr>
-        <td></td>
-        <td className={style.column}></td>
-        <td></td>
-      </tr>
-      <tr className={style.row}>
-        <td></td>
-        <td className={style.column}></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td className={style.column}></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>;
+  return <div className={style.grid}>
+    <GridRow rowIndex={0} data={props.data[0]} onClick={props.onClick}/>
+    <GridRow rowIndex={1} data={props.data[1]} isCenter={true} onClick={props.onClick}/>
+    <GridRow rowIndex={2} data={props.data[2]} onClick={props.onClick}/>
+  </div>;
 }
 
 export default Grid;
