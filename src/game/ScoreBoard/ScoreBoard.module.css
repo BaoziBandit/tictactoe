@@ -1,0 +1,13 @@
+.scoreboard {
+  position: absolute;
+  top: 0;
+  right: 2em;
+}
+
+.player1 {
+  color: #f80;
+}
+
+.player2 {
+  color: #08f;
+}

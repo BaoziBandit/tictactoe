@@ -1,0 +1,11 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #fff;
+  background-color: #111;
+  fill: #fff;
+}
+h1 {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+

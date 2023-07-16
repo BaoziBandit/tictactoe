@@ -1,0 +1,9 @@
+.board{
+  width: 60vw;
+  height: 60vw;
+  background-color: #181818;
+  border: 2px #444 solid;
+  border-radius: 10px;
+  position: relative;
+  margin: 5em auto;
+}
