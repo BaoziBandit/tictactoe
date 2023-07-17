@@ -7,7 +7,7 @@ const GridRow = props => {
   };
   return <div className={`${style.row} ${props.isCenter && style.center}`}>
     <GridBox boxIndex={0} data={props.data[0]} onClick={clickHandler}/>
-    <GridBox boxIndex={1} position={'column'} data={props.data[1]} onClick={clickHandler}/>
+    <GridBox boxIndex={1} data={props.data[1]} onClick={clickHandler} position={'row'}/>
     <GridBox boxIndex={2} data={props.data[2]} onClick={clickHandler}/>
   </div>
 }
