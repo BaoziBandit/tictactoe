@@ -1,54 +1,53 @@
 import "./App.css";
 
 import { useState } from "react";
-
 import Announcer from "./game/Announcer/Announcer";
 import Board from "./game/Board/Board";
 import BoardHeader from "./game/Board/BoardHeader";
 import Grid from "./game/Board/Grid/Grid";
 
-const PLAYERS = [
-  { player: 1, symbol: "X" },
-  { player: 2, symbol: "O" }
-];
-
-const SCORE_DEFAULT = [0, 0];
-const STARTING_DATA = [
-  [
-    { player: 0, symbol: "" },
-    { player: 0, symbol: "" },
-    { player: 0, symbol: "" },
-  ],
-  [
-    { player: 0, symbol: "" },
-    { player: 0, symbol: "" },
-    { player: 0, symbol: "" },
-  ],
-  [
-    { player: 0, symbol: "" },
-    { player: 0, symbol: "" },
-    { player: 0, symbol: "" },
-  ],
-];
-
-const STARTING_GAME_STATE = {
-  turn: PLAYERS[0],
-  score: SCORE_DEFAULT,
-  data: STARTING_DATA,
-  gameOver: false,
-};
-
 const App = () => {
-  const [game, setGame] = useState(STARTING_GAME_STATE);
+  const PLAYERS = [
+    { player: 1, symbol: "X" },
+    { player: 2, symbol: "O" }
+  ];
+  const BOARD_START = [
+    [
+      { player: 0, symbol: '' },
+      { player: 0, symbol: '' },
+      { player: 0, symbol: '' },
+    ],
+    [
+      { player: 0, symbol: '' },
+      { player: 0, symbol: '' },
+      { player: 0, symbol: '' },
+    ],
+    [
+      { player: 0, symbol: '' },
+      { player: 0, symbol: '' },
+      { player: 0, symbol: '' },
+    ],
+  ];
+  const SCORE_DEFAULT = [0, 0];
+  const FRESH_START = {
+    score: SCORE_DEFAULT,
+    gameOver: false,
+    isDraw: false
+  };
+
+  const [game, setGame] = useState({...FRESH_START});
+  const [board, setBoard] = useState(BOARD_START);
+  const [turn, setTurn] = useState(PLAYERS[0]);
 
   const gridBoxClickHandler = (row, box) => {
-    var sinker;
     if (!game.gameOver) {
-      setGame((prev) => {
-        var data = [...prev.data];
-        data[row][box] = prev.turn;
-        sinker = didPlayerWin(data, prev.turn.symbol);
-        return { ...prev, data: data, gameOver:  sinker, turn: !sinker && prev.turn.player === 1? PLAYERS[1] : PLAYERS[0]};
+      setBoard((prev) => {
+        var data = {...prev};
+        data[row][box] = turn;
+        if(!didPlayerWin(data, turn.symbol)){
+          setTurn(turn.player === 1 ? PLAYERS[1] : PLAYERS[0]);
+        }
+        return data;
       });
     }
   };
@@ -96,47 +95,55 @@ const App = () => {
         [2, 2],
       ],
     ];
-
+    var isDraw = true;
     for (var test of gameOverPairs) {
-      var matching = true;
+      var count = 0;
       for (var box of test) {
         var boxSymbol = boardData[box[0]][box[1]].symbol;
-        if (boxSymbol !== null && boxSymbol !== symbol) {
-          matching = false;
+        if(boxSymbol === ''){
+          isDraw = false;
+        }
+        if( boxSymbol === symbol){
+          ++count;
         }
       }
-      if (matching === true) return true;
+      if (count === 3){
+        setGame(prev => ({...prev, gameOver: true}));
+        return true;
+      }
     }
+    setGame(prev => ({...prev, isDraw: isDraw}));
     return false;
   };
 
   const playAgainHandler = () => {
-    if (game.gameOver) {
+    if(game.gameOver){
       setGame((prev) => {
-        var index = game.turn.player - 1;
+        var index = turn.player - 1;
         var updatedScore = prev.score;
         updatedScore[index]++;
-        const newGame = {...STARTING_GAME_STATE};
+        const newGame = {gameOver: false, score: updatedScore};
         return newGame;
       });
-    } else {
-      setGame((prev) => ({...STARTING_GAME_STATE, score: prev.score}));
     }
+    setTurn(PLAYERS[0]);
+    setBoard([...BOARD_START]);
   };
 
   const resetHandler = () => {
-    setPlayer(PLAYERS[0]);
-    setGame(STARTING_GAME_STATE);
+    setGame(FRESH_START);
+    setTurn(PLAYERS[0]);
+    setBoard([...BOARD_START]);
   };
 
-  console.log(game);
   return (
     <Board>
-      <BoardHeader title="Tic Tac Toe" score={game.score} />
-      <Grid data={game.data} onClick={gridBoxClickHandler} />
+      <BoardHeader title="Tic Tac Toe" score={game.score} onClear={playAgainHandler} onReset={resetHandler}/>
+      <Grid data={board} onClick={gridBoxClickHandler} />
       <Announcer
-        player={game.turn.player}
+        player={turn.player}
         gameOver={game.gameOver}
+        isDraw={game.isDraw}
         playAgain={playAgainHandler}
         reset={resetHandler}
       />

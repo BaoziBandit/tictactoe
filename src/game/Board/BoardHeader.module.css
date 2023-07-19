@@ -7,3 +7,28 @@
 .header h1{
   font-size: 3em;
 }
+
+.button {
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  font-size: 20pt;
+  color: #ddd;
+} 
+.button:hover{
+  cursor: pointer;
+}
+.eraser {
+  top: 0.5em;
+  left: 2.5em;
+}
+.eraser:hover {
+  color: #08f;
+}
+.restart {
+  top: 0.5em;
+  left: 1em;
+}
+.restart:hover {
+  color: #f80;
+}
